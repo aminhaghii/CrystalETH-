@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-08-10T15:30:18.775356",
+  "models_loaded": [
+    "lightgbm"
+  ],
+  "ensemble_metrics": {},
+  "cv_folds": 3,
+  "errors": [
+    "Meta-model training: boolean index did not match indexed array along dimension 0; dimension is 1920 but corresponding boolean dimension is 1440"
+  ]
+}

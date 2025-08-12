@@ -1,0 +1,56 @@
+# Baseline Performance Metrics Configuration
+# These values serve as reference points for model acceptance criteria
+
+baseline_metrics:
+  # LightGBM baseline model performance
+  lightgbm:
+    directional_accuracy: 0.552  # 55.2% from executive summary
+    weighted_RMSE: 0.065        # Estimated baseline weighted RMSE
+    MZTAE: 1.2                  # Estimated baseline MZTAE
+    zptae_loss: 0.45            # Estimated baseline ZPTAE
+    mae: 0.055                  # Estimated baseline MAE
+    mse: 0.0042                 # Estimated baseline MSE
+    
+  # Acceptance thresholds
+  thresholds:
+    min_directional_accuracy: 0.52   # 52% minimum
+    max_directional_accuracy: 0.70   # 70% maximum (leakage check)
+    max_weighted_RMSE: 0.060         # Must beat baseline
+    max_MZTAE: 1.1                   # Must beat baseline
+    min_resolved_predictions: 30      # Minimum sample size
+    max_p_value: 0.05                # Statistical significance
+    
+  # Model comparison criteria
+  improvement_requirements:
+    weighted_RMSE_improvement: 0.005  # Must improve by at least 0.5%
+    MZTAE_improvement: 0.1           # Must improve by at least 0.1
+    directional_accuracy_improvement: 0.01  # Must improve by at least 1%
+
+# Data quality requirements
+data_quality:
+  min_samples: 30
+  max_missing_ratio: 0.2
+  timezone: "UTC"
+  
+# Statistical testing configuration
+statistical_tests:
+  pesaran_timmermann:
+    enabled: true
+    significance_level: 0.05
+  diebold_mariano:
+    enabled: true
+    significance_level: 0.05
+    
+# Model validation settings
+validation:
+  walk_forward_cv:
+    min_folds: 8
+    max_folds: 12
+    validation_horizon: "24h"
+  
+# Performance monitoring
+monitoring:
+  alert_thresholds:
+    high_directional_accuracy: 0.70  # Flag potential leakage
+    low_directional_accuracy: 0.45   # Flag poor performance
+    high_loss_values: 10.0           # Flag numerical issues

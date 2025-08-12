@@ -1,0 +1,172 @@
+# ETH Forecasting Project Configuration
+# Following Rule #5: No Hardcoded Values
+
+# Project Settings
+project:
+  name: "ETH Forecasting"
+  version: "1.0.0"
+  description: "Ethereum price forecasting using advanced ML techniques"
+  random_seed: 42
+  timezone: "UTC"
+
+# Data Configuration
+data:
+  # Data Sources
+  symbols:
+    primary: "ETH-USD"
+    secondary: "BTC-USD"
+  
+  # Data Collection
+  start_date: "2020-01-01"
+  end_date: null  # null means current date
+  interval: "1d"  # Daily data
+  
+  # Data Validation
+  min_data_points: 500
+  max_missing_ratio: 0.05  # 5% max missing data
+  
+  # File Paths (relative to project root)
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  interim_data_dir: "data/interim"
+  
+  # Target Variable
+  target_column: "ETH_log_return_24h"
+  direction_column: "ETH_direction"
+  
+  # Data Quality
+  price_bounds:
+    min_price: 0.01
+    max_price: 100000
+  volume_bounds:
+    min_volume: 0
+    max_volume: 1e12
+  
+# Data Processing
+preprocessing:
+  nan_threshold: 0.20  # 20% threshold for NaN handling
+  hampel_window: 5
+  hampel_n_sigma: 3
+  winsorize_lower: 0.005  # 0.5%
+  winsorize_upper: 0.995  # 99.5%
+  wavelet_type: "db4"
+  rolling_median_window: 3
+  extreme_event_multiplier: 8
+  rolling_std_window: 30
+
+# Feature Engineering
+features:
+  lag_periods: [1, 2, 3, 7, 14, 30]
+  rolling_windows: [7, 14, 30]
+  volatility_windows: [7, 14, 30]
+  momentum_periods: [14]
+  min_samples_rolling: 30
+
+# Model Configuration
+models:
+  random_seed: 42
+  
+  lightgbm:
+    n_trials: 200
+    early_stopping_rounds: 50
+    eval_metric: "rmse"
+    use_zptae_loss: false  # Temporarily disabled for initial testing
+    
+  tft:
+    n_trials: 100
+    max_epochs: 100
+    early_stopping_patience: 10
+    batch_size: 64
+    learning_rate: 0.001
+    
+  nbeats:
+    n_trials: 80
+    max_epochs: 100
+    early_stopping_patience: 10
+    batch_size: 32
+    
+  tcn:
+    n_trials: 50
+    max_epochs: 100
+    early_stopping_patience: 10
+    batch_size: 32
+    learning_rate: 0.001
+    num_channels: [25, 25, 25]
+    kernel_size: 2
+    dropout: 0.2
+    sequence_length: 30
+    
+  cnn_lstm:
+    n_trials: 50
+    max_epochs: 100
+    early_stopping_patience: 10
+    batch_size: 32
+    learning_rate: 0.001
+    cnn_filters: 64
+    cnn_kernel_size: 3
+    lstm_hidden_size: 50
+    lstm_layers: 2
+    dropout: 0.2
+    sequence_length: 30
+    
+  ensemble:
+    meta_model: "lightgbm"
+    cv_folds: 5
+
+# Loss Function
+loss:
+  zptae:
+    a: 1.0
+    p: 1.5
+    epsilon: 1e-8  # for numerical stability
+  multi_task:
+    zptae_weight: 0.7
+    bce_weight: 0.3
+
+# Validation
+validation:
+  method: "walk_forward"
+  initial_train_size: 365  # days
+  validation_size: 30  # days
+  step_size: 30  # days
+  min_folds: 8
+  max_folds: 12
+  holdout_size: 180  # 6 months
+
+# Evaluation Metrics
+metrics:
+  regression: ["rmse", "mae", "mape", "zptae"]
+  classification: ["accuracy", "precision", "recall", "f1"]
+  economic: ["sharpe", "max_drawdown", "hit_rate"]
+
+# Economic Backtesting
+backtesting:
+  transaction_cost: 0.0005  # 0.05%
+  slippage: 0.0005  # 0.05%
+  initial_capital: 10000
+  position_size: 0.1  # 10% of capital per trade
+
+# Statistical Tests
+statistical_tests:
+  pesaran_timmermann: true
+  diebold_mariano: true
+  confidence_level: 0.95
+
+# Paths
+paths:
+  data_raw: "data/raw"
+  data_processed: "data/processed"
+  models: "models"
+  reports: "reports"
+  figures: "reports/figures"
+  
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+# Performance
+performance:
+  n_jobs: -1  # use all available cores
+  memory_limit: "8GB"
+  gpu_enabled: true

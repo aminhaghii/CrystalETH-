@@ -1,0 +1,15 @@
+{
+  "model_name": "lightgbm_baseline",
+  "performance_metrics": {
+    "directional_accuracy": 0.52,
+    "weighted_RMSE": 45.2,
+    "MZTAE": 1.85,
+    "sharpe_ratio": 0.15,
+    "max_drawdown": 0.12
+  },
+  "validation_metrics": {
+    "cross_validation_score": 0.51,
+    "stability_score": 0.78
+  },
+  "timestamp": "2025-08-11T20:02:09.927607"
+}

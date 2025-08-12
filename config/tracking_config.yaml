@@ -1,0 +1,102 @@
+# Prediction Tracking System Configuration
+
+# File paths and directories
+tracking:
+  base_dir: "logs/predictions"
+  predictions_file: "predictions_log.csv"
+  chain_responses_file: "chain_responses.jsonl"
+  performance_file: "performance_metrics.json"
+  backup_dir: "logs/backups"
+  
+# Production settings
+production:
+  log_dir: "logs/production"
+  max_pending_predictions: 1000
+  auto_cleanup_days: 30
+  performance_update_interval: 3600  # seconds
+  
+# Loss function parameters
+loss_functions:
+  zptae:
+    a: 1.0
+    p: 1.5
+  
+# Performance monitoring
+monitoring:
+  alert_thresholds:
+    directional_accuracy_min: 0.45
+    mae_max: 0.1
+    confidence_correlation_min: 0.1
+    days_to_resolution_max: 7
+  
+  reporting:
+    daily_reports: true
+    weekly_reports: true
+    export_format: "json"
+    include_visualizations: true
+  
+# Data validation
+validation:
+  max_prediction_value: 1.0  # Maximum absolute prediction value
+  min_confidence_score: 0.0
+  max_confidence_score: 1.0
+  required_fields:
+    - "timestamp"
+    - "topic_id"
+    - "prediction_value"
+    - "prediction_direction"
+  
+# Chain integration
+chain:
+  response_timeout: 300  # seconds
+  max_retries: 3
+  required_confirmations: 3
+  gas_limit: 100000
+  
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_rotation: true
+  max_file_size: "10MB"
+  backup_count: 5
+  
+# Model configuration
+models:
+  ensemble_weights:
+    lightgbm: 0.3
+    tft: 0.25
+    nbeats: 0.2
+    tcn: 0.15
+    cnn_lstm: 0.1
+  
+  confidence_calculation:
+    method: "agreement_variance"  # Options: agreement_variance, entropy, ensemble_std
+    min_models_required: 2
+    
+# Data retention
+retention:
+  predictions: 365  # days
+  chain_responses: 365  # days
+  performance_metrics: 730  # days
+  backup_frequency: 7  # days
+  
+# API configuration (for fetching ground truth)
+api:
+  base_url: "https://api.example.com"
+  timeout: 30
+  rate_limit: 100  # requests per minute
+  retry_delay: 5  # seconds
+  
+# Notification settings
+notifications:
+  enabled: true
+  channels:
+    - "log"
+    - "file"
+  
+  triggers:
+    performance_degradation: true
+    high_error_rate: true
+    system_errors: true
+    daily_summary: true

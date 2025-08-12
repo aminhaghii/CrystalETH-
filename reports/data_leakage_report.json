@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-08-11T20:02:36.465350",
+  "total_predictions": 49,
+  "resolved_predictions": 49,
+  "leakage_detected": true,
+  "total_issues": 3,
+  "test_results": {
+    "timestamp": {
+      "timestamp_leakage": false,
+      "issues": [
+        "Error analyzing timestamps: 'ground_truth_timestamp'"
+      ],
+      "details": {}
+    },
+    "features": {
+      "feature_leakage": true,
+      "issues": [
+        "Suspiciously high correlation: 0.968"
+      ],
+      "details": {
+        "prediction_correlation": 0.9675348510418398,
+        "directional_accuracy": 0.6938775510204082,
+        "mean_absolute_error": 24.09937470755692,
+        "std_absolute_error": 38.86367287102105
+      }
+    },
+    "consistency": {
+      "consistency_issues": false,
+      "issues": [
+        "Error checking consistency: Index(['topic_id'], dtype='object')"
+      ],
+      "details": {}
+    }
+  }
+}
