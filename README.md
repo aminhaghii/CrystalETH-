@@ -43,10 +43,6 @@ CrystalETH is a state-of-the-art machine learning system for Ethereum (ETH) pric
 
 ## 📊 Model Performance Visualizations
 
-### Backtesting Results
-![Backtest Performance](reports/backtesting/backtest_performance.png)
-*Comprehensive backtesting showing model performance over time with risk metrics*
-
 ### Return Distribution Analysis
 ![Return Distributions](reports/backtesting/return_distributions.png)
 *Statistical analysis of prediction accuracy and return distributions*
